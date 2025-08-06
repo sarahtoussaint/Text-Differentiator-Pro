@@ -244,7 +244,7 @@ with st.sidebar:
         st.markdown(f"• Generate Questions: {make_qs}")
 
 # ---- Tabs ----
-tab_adapt, tab_metrics, tab_hist = st.tabs(["Adapt Text", "Analytics", "History"])
+tab_adapt, tab_metrics, tab_hist, tab_profiles = st.tabs(["Adapt Text", "Analytics", "History", "Profiles"])
 
 # ===========  ADAPT TAB  ===========
 with tab_adapt:
@@ -425,6 +425,34 @@ with tab_hist:
                 st.write("**Adapted preview:**", rec["adapted"])
     else:
         st.write("No history yet – run an adaptation first.")
+# ===========  PROFILES TAB  ===========
+with tab_profiles:
+    st.subheader("Select and Apply Student Profile")
+
+    selected_profile = st.selectbox("Choose student profile", ["None"] + list(student_profiles.keys()))
+
+    if selected_profile != "None":
+        profile = student_profiles[selected_profile]
+
+        st.markdown(f"### 👤 Profile: {selected_profile}")
+        st.markdown(f"**Grade Level:** {profile['grade_level']}")
+        st.markdown("**Adaptation Settings:**")
+        for k, v in profile.items():
+            if k != "grade_level":
+                label = k.replace("_", " ").capitalize()
+                st.markdown(f"- {label}: {'✅' if v else '❌'}")
+
+        if st.button("✅ Apply Profile"):
+            tgt_grade = profile["grade_level"]
+            simplify = profile["simplify_vocab"]
+            short_p = profile["short_paragraphs"]
+            define = profile["in_text_definitions"]
+            breaks = profile["breaks"]
+            make_qs = profile["make_qs"]
+            st.success("Profile settings applied! Head to the 'Adapt Text' tab to continue.")
+    else:
+        st.info("Select a student profile to view and apply settings.")
+
 
 # ──────────────────────────────────────  FOOTER  ─────────────────────────────────────────────
 st.markdown("---")
