@@ -173,6 +173,33 @@ st.session_state.setdefault("adapted", "")
 st.session_state.setdefault("questions", "")
 st.session_state.setdefault("history", [])
 
+student_profiles = {
+    "Jordan – ELL 6th Grade": {
+        "grade_level": "6th Grade",
+        "simplify_vocab": True,
+        "short_paragraphs": True,
+        "in_text_definitions": True,
+        "breaks": True,
+        "make_qs": True,
+    },
+    "Ava – IEP 4th Grade": {
+        "grade_level": "4th Grade",
+        "simplify_vocab": True,
+        "short_paragraphs": True,
+        "in_text_definitions": False,
+        "breaks": False,
+        "make_qs": True,
+    },
+    "Liam – Advanced 8th Grade": {
+        "grade_level": "8th Grade",
+        "simplify_vocab": False,
+        "short_paragraphs": False,
+        "in_text_definitions": False,
+        "breaks": False,
+        "make_qs": True,
+    }
+}
+
 # ---- Sidebar ----
 with st.sidebar:
     st.header("Configuration")
@@ -194,6 +221,27 @@ with st.sidebar:
 
     st.header("Output Options")
     make_qs  = st.checkbox("Generate comprehension questions", True)
+
+    st.header("Student Profile")
+    selected_profile = st.selectbox("Choose student profile", ["None"] + list(student_profiles.keys()))
+
+    # Override settings if profile is selected
+    if selected_profile != "None":
+        profile = student_profiles[selected_profile]
+        tgt_grade = profile["grade_level"]
+        simplify = profile["simplify_vocab"]
+        short_p = profile["short_paragraphs"]
+        define = profile["in_text_definitions"]
+        breaks = profile["breaks"]
+        make_qs = profile["make_qs"]
+
+        st.markdown("✅ **Profile applied:**")
+        st.markdown(f"• **Grade Level:** {tgt_grade}")
+        st.markdown(f"• Simplify Vocab: {simplify}")
+        st.markdown(f"• Short Paragraphs: {short_p}")
+        st.markdown(f"• In-text Definitions: {define}")
+        st.markdown(f"• Visual Breaks: {breaks}")
+        st.markdown(f"• Generate Questions: {make_qs}")
 
 # ---- Tabs ----
 tab_adapt, tab_metrics, tab_hist = st.tabs(["Adapt Text", "Analytics", "History"])
