@@ -342,22 +342,24 @@ OUTPUT
   <div style="border:1px solid #d2d2d7;border-radius:12px;padding:20px;height:450px;overflow:auto;">
       <h5>Adapted for {tgt_grade}</h5>
       <div style="white-space:pre-wrap;font-size:15px;">{st.session_state.adapted}</div>
-      # ─────────────── Text-to-Speech Section ───────────────
-    st.markdown("### 🔊 Listen to Adapted Text")
-
-    tts_file = "output.mp3"
-
+  # ─────────────── Text-to-Speech Section ───────────────
+  st.markdown("### 🔊 Listen to Adapted Text")
+  tts_file = "output.mp3"
+  try:
     if st.button("🔁 Generate Audio"):
-        try:
+        if st.session_state.adapted.strip():
             tts = gTTS(text=st.session_state.adapted)
             tts.save(tts_file)
             st.success("Audio generated successfully!")
-        except Exception as e:
-            st.error(f"Failed to generate audio: {e}")
+        else:
+            st.warning("No adapted text available.")
+    except Exception as e:
+        st.error("Failed to generate audio.")
 
 # If file exists, show audio player
-    if os.path.exists(tts_file):
-        st.audio(tts_file, format="audio/mp3")
+if os.path.exists(tts_file):
+    st.audio(tts_file, format="audio/mp3")
+
 
   </div>
 </div>
