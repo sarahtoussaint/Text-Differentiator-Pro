@@ -223,27 +223,6 @@ with st.sidebar:
     st.header("Output Options")
     make_qs  = st.checkbox("Generate comprehension questions", True)
 
-    st.header("Student Profile")
-    selected_profile = st.selectbox("Choose student profile", ["None"] + list(student_profiles.keys()))
-
-    # Override settings if profile is selected
-    if selected_profile != "None":
-        profile = student_profiles[selected_profile]
-        tgt_grade = profile["grade_level"]
-        simplify = profile["simplify_vocab"]
-        short_p = profile["short_paragraphs"]
-        define = profile["in_text_definitions"]
-        breaks = profile["breaks"]
-        make_qs = profile["make_qs"]
-
-        st.markdown("✅ **Profile applied:**")
-        st.markdown(f"• **Grade Level:** {tgt_grade}")
-        st.markdown(f"• Simplify Vocab: {simplify}")
-        st.markdown(f"• Short Paragraphs: {short_p}")
-        st.markdown(f"• In-text Definitions: {define}")
-        st.markdown(f"• Visual Breaks: {breaks}")
-        st.markdown(f"• Generate Questions: {make_qs}")
-
 # ---- Tabs ----
 tab_adapt, tab_metrics, tab_hist, tab_profiles = st.tabs(["Adapt Text", "Analytics", "History", "Profiles"])
 
